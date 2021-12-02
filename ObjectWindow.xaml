@@ -1,0 +1,220 @@
+﻿<Window x:Class="QLBH.ObjectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QLBH"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:QLBH.UserControlQ"
+        xmlns:rules="clr-namespace:QLBH.ValidationRules"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        DataContext="{StaticResource ObjectVM}"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Name="Window"
+        Title="Quản lý hàng" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <uc:ControlBarUC Tag="{Binding Title,ElementName=Window}"></uc:ControlBarUC>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <materialDesign:Card Grid.Row="0" Margin="5">
+                <WrapPanel>
+                    <TextBox
+                        Margin="5 5 15 10"
+                        materialDesign:HintAssist.Hint="Tên hàng"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        rules:ValidationBehavior.HasError="{Binding ValidateErrorDisplayName}"
+                    >
+                        <TextBox.Text>
+                            <Binding Path="DisplayName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <rules:NotEmptyRule ValidatesOnTargetUpdated="True"></rules:NotEmptyRule>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <ComboBox 
+                        Margin="5 5 15 -4"
+                        IsEditable="False"
+                        ItemsSource="{Binding ListUnit}" 
+                        DisplayMemberPath="DisplayName"
+                        SelectedItem="{Binding SelectedUnit , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
+                        materialDesign:HintAssist.Hint="Đơn vị">
+                        <ComboBox.Text>
+                            <Binding Path="SelectedUnitText" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <rules:NotEmptyRule  ValidatesOnTargetUpdated="True"></rules:NotEmptyRule>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </ComboBox.Text>
+                    </ComboBox>
+                    <ComboBox
+                        Margin="5 5 15 -4"
+                        IsEditable="False"
+                        ItemsSource="{Binding ListSuplier}"
+                        DisplayMemberPath="DisplayName"
+                        SelectedItem="{Binding SelectedSuplier , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
+                        materialDesign:HintAssist.Hint="Nhà cung cấp">
+                        <ComboBox.Text>
+                            <Binding Path="SelectedSuplierText" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <rules:NotEmptyRule  ValidatesOnTargetUpdated="True"></rules:NotEmptyRule>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </ComboBox.Text>
+                    </ComboBox>
+                    <TextBox
+                        Margin="5 5 15 10"
+                        materialDesign:HintAssist.Hint="QRCode"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding QRCode , UpdateSourceTrigger=PropertyChanged}"
+                    />
+                    <TextBox
+                        Margin="5 5 15 10"
+                        materialDesign:HintAssist.Hint="BarCode"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                        Text="{Binding BarCode , UpdateSourceTrigger=PropertyChanged}"
+                    />
+                    <!--             Phần thêm ảnh cho sản phẩm                    -->
+                    <Rectangle Visibility="{Binding Avatar,UpdateSourceTrigger=PropertyChanged}" Stroke="Green" x:Name="Avatar" Margin="0 0 0 0" HorizontalAlignment="Center" Height="50" Width="50" >
+                        <Rectangle.Fill>
+                            <ImageBrush x:Name="Image" ImageSource="{Binding FileName}"/>
+                        </Rectangle.Fill>
+
+                    </Rectangle>
+                    <Rectangle Visibility="{Binding NoImage,UpdateSourceTrigger=PropertyChanged}" Stroke="Green" Margin="0 0 0 0" HorizontalAlignment="Center" Height="50" Width="50" >
+                        <Rectangle.Fill>
+                            <ImageBrush x:Name="NoImage" ImageSource="/Images/noimage.jpg"/>
+                        </Rectangle.Fill>
+
+                    </Rectangle>
+                    <StackPanel>
+                        <Button x:Name="CloseImageButton" HorizontalAlignment="Left" Margin="-10 5 0 0"  Width="10" Height="10" Content=""
+                            Command="{Binding CloseImageCommand}"
+                            CommandParameter="{Binding ElementName=CloseImageButton}"
+                            Visibility="{Binding CloseButtonVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            >
+                            <Button.Template>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Grid>
+                                        <Ellipse Fill="Red"/>
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <ContentPresenter.Content>
+                                                <materialDesign:PackIcon Width="10" Height="10" Kind="CloseCircle" />
+                                            </ContentPresenter.Content>
+                                        </ContentPresenter>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button
+                        Width="80"
+                        Height="25"
+                        Margin="5 10 0 0"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        FontSize="12"
+                        Content="Chọn file" 
+                        
+                        Command="{Binding ImageCommand}"
+                        CommandParameter="{Binding ElementName=Image}"
+                        />
+                    </StackPanel>
+
+                </WrapPanel>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Row="1" Margin="5">
+                <WrapPanel>
+                    <Button
+                        Width="100"
+                        Margin="5"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        Content="Thêm" 
+                        Command="{Binding AddCommand}"
+                        CommandParameter="{Binding ElementName=List}"
+                    />
+                    <Button
+                        Width="100"
+                        Margin="5"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        Content="Sửa"
+                        Command="{Binding EditCommand}"
+                        CommandParameter="{Binding ElementName=List}"
+                    />
+                    <Button
+                        Width="100"
+                        Margin="5"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                        Content="Xóa"
+                        Command="{Binding DeleteCommand}"
+                        CommandParameter="{Binding ElementName=List}"
+                    />
+                </WrapPanel>
+
+            </materialDesign:Card>
+            <materialDesign:Card Margin="5" Grid.Row="2" VerticalAlignment="Stretch">
+                <ScrollViewer VerticalScrollBarVisibility="Disabled">
+                    <ListView x:Name="List" ItemsSource="{Binding List}" SelectedItem="{Binding SelectedItem,Mode=OneWayToSource}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding ID}">
+                                    <GridViewColumnHeader Content="ID" Padding="7"/>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding DisplayName}">
+                                    <GridViewColumnHeader Content="Tên hàng" Width="150" Padding="7"/>
+                                </GridViewColumn>
+                                
+                                <GridViewColumn>
+                                    <GridViewColumnHeader  Content="Ảnh" Width="80" Padding="7"/>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Rectangle x:Name="Avatar" Margin="0 0 0 0" HorizontalAlignment="Center" Height="50" Width="50" >
+                                                <Rectangle.Fill>
+                                                    <ImageBrush ImageSource="{Binding Image}"/>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                
+                                <GridViewColumn DisplayMemberBinding="{Binding Unit.DisplayName}">
+                                    <GridViewColumnHeader Content="Đơn vị" Width="100" Padding="7"/>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Suplier.DisplayName}">
+                                    <GridViewColumnHeader Content="Nhà cung cấp" Width="150" Padding="7"/>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding QRCode}">
+                                    <GridViewColumnHeader Content="QRCode" Width="100" Padding="7"/>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding BarCode}">
+                                    <GridViewColumnHeader Content="BarCode" Width="100" Padding="7"/>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </ScrollViewer>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Window>

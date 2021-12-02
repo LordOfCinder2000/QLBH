@@ -1,0 +1,782 @@
+﻿<Window x:Class="QLBH.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:QLBH"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:QLBH.UserControlQ"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        DataContext="{StaticResource MainVM}"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Name="mainWindow"
+        
+        Title="Phần mềm quản lý cửa hàng" Height="700" Width="1200">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction 
+                Command="{Binding LoadedWindowCommand}"
+                CommandParameter="{Binding ElementName=mainWindow}"
+             />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Window.Resources>
+        <Storyboard x:Key="MenuClose">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="60"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Avatar" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="70"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="50"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Avatar" Storyboard.TargetProperty="(FrameworkElement.Height)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="70"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="50"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Avatar" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                <SplineThicknessKeyFrame KeyTime="0" Value="0,5,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,40,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+            <StringAnimationUsingKeyFrames Storyboard.TargetName="UserName" Storyboard.TargetProperty="(TextBlock.Text)">
+                <DiscreteStringKeyFrame KeyTime="0" Value="{Binding UserName,UpdateSourceTrigger=PropertyChanged}" />
+                <DiscreteStringKeyFrame KeyTime="0:0:0.5" Value="" />
+            </StringAnimationUsingKeyFrames>
+            <StringAnimationUsingKeyFrames Storyboard.TargetName="UserRole" Storyboard.TargetProperty="(TextBlock.Text)">
+                <DiscreteStringKeyFrame KeyTime="0" Value="{Binding UserRole}" />
+                <DiscreteStringKeyFrame KeyTime="0:0:0.5" Value="" />
+            </StringAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="LogOutButton"  Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                <SplineThicknessKeyFrame KeyTime="0" Value="0,4,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,-5,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="MenuOpen">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="60"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="200"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Avatar" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="70"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Avatar" Storyboard.TargetProperty="(FrameworkElement.Height)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="70"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="Avatar" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                <SplineThicknessKeyFrame KeyTime="0" Value="0,40,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,5,0,5" />
+            </ThicknessAnimationUsingKeyFrames>
+            <StringAnimationUsingKeyFrames Storyboard.TargetName="UserName" Storyboard.TargetProperty="(TextBlock.Text)">
+                <DiscreteStringKeyFrame KeyTime="0" Value="" />
+                <DiscreteStringKeyFrame KeyTime="0:0:0.5" Value="{Binding UserName,UpdateSourceTrigger=PropertyChanged}" />
+            </StringAnimationUsingKeyFrames>
+            <StringAnimationUsingKeyFrames Storyboard.TargetName="UserRole" Storyboard.TargetProperty="(TextBlock.Text)">
+                <DiscreteStringKeyFrame KeyTime="0" Value="" />
+                <DiscreteStringKeyFrame KeyTime="0:0:0.5" Value="{Binding UserRole}" />
+            </StringAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetName="LogOutButton"  Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                <SplineThicknessKeyFrame KeyTime="0" Value="0,-5,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="0,4,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="LogOut">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="GridMenu" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="60"/>
+            </DoubleAnimationUsingKeyFrames>
+            
+        </Storyboard>
+    </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenMenu">
+            <BeginStoryboard Storyboard="{StaticResource MenuOpen}"></BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseMenu">
+            <BeginStoryboard Storyboard="{StaticResource MenuClose}"></BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="LogOutButton">
+            <BeginStoryboard Storyboard="{StaticResource MenuClose}"></BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+    <!--Main-->
+    <Grid >
+
+
+        <Grid Grid.Row="0" Height="35" VerticalAlignment="Top">
+            <uc:ControlBarUC Tag="{Binding Title,ElementName=mainWindow}">
+            </uc:ControlBarUC>
+        </Grid>
+        <Grid Margin="0 35 0 0"  x:Name="GridMenu" Width="60" Panel.ZIndex="1" HorizontalAlignment="Left" Background="Green">
+            <StackPanel>
+                <Grid Height="160">
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="Green" Offset="0"/>
+                            <GradientStop Color="#FFAEEA00" Offset="1"/>
+                            <GradientStop Color="#FFAEEA00" Offset="0.418"/>
+                            <GradientStop Color="#FFAEEA00" Offset="0.599"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <StackPanel Height="160" >
+                        <Ellipse x:Name="Avatar" Margin="0 40 0 0" HorizontalAlignment="Center" Height="50" Width="50" >
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding Avatar}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock x:Name="UserName" HorizontalAlignment="Center" Text=""></TextBlock>
+                        <TextBlock x:Name="UserRole" HorizontalAlignment="Center" Text=""></TextBlock>
+                        <Grid Margin="0 0 0 0" HorizontalAlignment="Center">
+                            <!--<Grid.Resources>
+                                <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border x:Name="Border" Background="{TemplateBinding Background}">
+                                                    <ContentPresenter x:Name="content" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                                
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="Red" TargetName="Border" />
+                                                        <Setter Property="TextElement.Foreground" TargetName="content" Value="{StaticResource Button.Disabled.Foreground}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>-->
+                            <!--<Button Padding="0" x:Name="LogOutButton" Width="200" Height="40" Background="{x:Null}" Foreground="Red" VerticalAlignment="Bottom" Margin="0 3 0 0" Command="{Binding LogOutCommand}" CommandParameter="{Binding ElementName=mainWindow}"  BorderBrush="{x:Null}">
+                                <StackPanel VerticalAlignment="Center" Width="140" HorizontalAlignment="Left"  Margin="-35 0 0 0" Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Power" Margin="0 0 0 0" VerticalAlignment="Center" Height="35" Width="35"/>
+                                    <TextBlock FontWeight="Bold" Margin="12 0 0 0" Foreground="Red"  Text="Đăng xuất" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>-->
+                            <Button VerticalAlignment="Bottom" Padding="0" Margin="0 -5 0 0" Foreground="Red" x:Name="LogOutButton" Command="{Binding LogOutCommand}" Height="45" Width="200" Background="{x:Null}" BorderBrush="{x:Null}">
+                                <StackPanel  Width="140" Margin="-35 0 0 0" Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Power" VerticalAlignment="Center" Height="35" Width="35"/>
+                                    <TextBlock Text="Đăng xuất" VerticalAlignment="Center" Margin="15 10"/>
+                                </StackPanel>
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource MultiBindingConverter}">
+                                        <Binding ElementName="mainWindow"></Binding>
+                                        <Binding ElementName="ButtonCloseMenu"></Binding>
+                                        <Binding ElementName="ButtonOpenMenu"></Binding>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseEnter">
+                                        <i:InvokeCommandAction 
+                                            Command="{Binding MouseEnterButton}"
+                                            CommandParameter="{Binding ElementName=LogOutButton}"
+                                        />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="MouseLeave">
+                                        <i:InvokeCommandAction 
+                                        Command="{Binding MouseLeaveButton}"
+                                        CommandParameter="{Binding ElementName=LogOutButton}"
+                                    />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                    <Button Margin="0 0 13 0" Click="ButtonCloseMenu_Click" x:Name="ButtonCloseMenu" Padding="0" Width="35" Height="35" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" HorizontalAlignment="Right" Visibility="Collapsed">
+                        <materialDesign:PackIcon Width="25" Height="25" Background="Green" Kind="ArrowLeft"/>
+                        <!--<i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseEnter">
+                                <i:InvokeCommandAction 
+                                            Command="{Binding MouseLeftButtonDown}"
+                                            CommandParameter="{Binding ElementName=ButtonCloseMenu}"
+                                        />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>-->
+                    </Button>
+                    <Button Click="ButtonOpenMenu_Click" Margin="0 0 13 0" x:Name="ButtonOpenMenu" Padding="0" Width="35" Height="35" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" HorizontalAlignment="Right">
+                        <materialDesign:PackIcon Width="25" Height="25" Background="Green" Kind="Menu"/>
+                    </Button>
+                </Grid>
+                <ListView Padding="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="Snow">
+                    <ListViewItem Padding="0" Cursor="Hand">
+                        <Button x:Name="Button1" Command="{Binding OutputWindowCommand}" CommandParameter="{Binding ElementName=mainWindow}" Height="60" Width="200" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <!--<Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Cursor" Value="Hand"></Setter>
+                                    <Setter Property="Width" Value="200"></Setter>
+                                    <Setter Property="Height" Value="60"></Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            
+                                            <Setter Property="BorderBrush" Value="Red"></Setter>
+                                            <Setter Property="BorderThickness" Value="5 0 0 0"></Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>-->
+                            <StackPanel  Width="140" Margin="-24 0 0 0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Cart" VerticalAlignment="Center" Height="25" Width="25"/>
+                                <TextBlock Text="Bán hàng" VerticalAlignment="Center" Margin="20 10"/>
+                            </StackPanel>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction 
+                                        Command="{Binding MouseEnterButton}"
+                                        CommandParameter="{Binding ElementName=Button1}"
+                                    />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction 
+                                    Command="{Binding MouseLeaveButton}"
+                                    CommandParameter="{Binding ElementName=Button1}"
+                                />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </ListViewItem>
+                    <ListViewItem Padding="0">
+                        <Button x:Name="Button2" Command="{Binding OutputInfoWindowCommand}" CommandParameter="{Binding ElementName=mainWindow}" Height="60" Width="200" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <StackPanel  Width="140" Margin="-24 0 0 0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Export" VerticalAlignment="Center" Height="25" Width="25"/>
+                                <TextBlock Text="Xuất hàng" VerticalAlignment="Center" Margin="20 10"/>
+                            </StackPanel>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction 
+                                        Command="{Binding MouseEnterButton}"
+                                        CommandParameter="{Binding ElementName=Button2}"
+                                    />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction 
+                                    Command="{Binding MouseLeaveButton}"
+                                    CommandParameter="{Binding ElementName=Button2}"
+                                />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </ListViewItem>
+                    <ListViewItem Padding="0">
+                        <Button x:Name="Button3" Command="{Binding InputInfoWindowCommand}" CommandParameter="{Binding ElementName=mainWindow}" Height="60" Width="200" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <StackPanel  Width="140" Margin="-24 0 0 0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Import" VerticalAlignment="Center" Height="25" Width="25"/>
+                                <TextBlock Text="Nhập hàng" VerticalAlignment="Center" Margin="20 10"/>
+                            </StackPanel>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction 
+                                        Command="{Binding MouseEnterButton}"
+                                        CommandParameter="{Binding ElementName=Button3}"
+                                    />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction 
+                                    Command="{Binding MouseLeaveButton}"
+                                    CommandParameter="{Binding ElementName=Button3}"
+                                />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </ListViewItem>
+                    <ListViewItem Padding="0">
+                        <Button x:Name="Button4" Command="{Binding ObjectWindowCommand}" CommandParameter="{Binding ElementName=mainWindow}" Height="60" Width="200" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <StackPanel  Width="140" Margin="-24 0 0 0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="CellphoneIphone" VerticalAlignment="Center" Height="25" Width="25"/>
+                                <TextBlock Text="Hàng hóa" VerticalAlignment="Center" Margin="20 10"/>
+                            </StackPanel>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction 
+                                        Command="{Binding MouseEnterButton}"
+                                        CommandParameter="{Binding ElementName=Button4}"
+                                    />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction 
+                                    Command="{Binding MouseLeaveButton}"
+                                    CommandParameter="{Binding ElementName=Button4}"
+                                />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </ListViewItem>
+                    <ListViewItem Padding="0">
+                        <Button x:Name="Button5" Command="{Binding SuplierWindowCommand}" CommandParameter="{Binding ElementName=mainWindow}" Height="60" Width="200" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <StackPanel Width="140" Margin="-24 0 0 0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="LocalShipping" VerticalAlignment="Center" Height="25" Width="25"/>
+                                <TextBlock Text="Nhà cung cấp" VerticalAlignment="Center" Margin="20 10"/>
+                            </StackPanel>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction 
+                                        Command="{Binding MouseEnterButton}"
+                                        CommandParameter="{Binding ElementName=Button5}"
+                                    />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction 
+                                    Command="{Binding MouseLeaveButton}"
+                                    CommandParameter="{Binding ElementName=Button5}"
+                                />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </ListViewItem>
+                    <ListViewItem Padding="0">
+                        <Button x:Name="Button6" Command="{Binding UnitWindowCommand}" CommandParameter="{Binding ElementName=mainWindow}" Height="60" Width="200" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <StackPanel  Width="140" Margin="-24 0 0 0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="TapeMeasure" VerticalAlignment="Center" Height="25" Width="25"/>
+                                <TextBlock Text="Đơn vị tính" VerticalAlignment="Center" Margin="20 10"/>
+                            </StackPanel>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction 
+                                        Command="{Binding MouseEnterButton}"
+                                        CommandParameter="{Binding ElementName=Button6}"
+                                    />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction 
+                                    Command="{Binding MouseLeaveButton}"
+                                    CommandParameter="{Binding ElementName=Button6}"
+                                />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </ListViewItem>
+                    <ListViewItem Padding="0">
+                        <Button x:Name="Button7" Command="{Binding CustomerWindowCommand}" CommandParameter="{Binding ElementName=mainWindow}" Height="60" Width="200" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <StackPanel Width="140" Margin="-24 0 0 0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="HumanMaleMale" VerticalAlignment="Center" Height="25" Width="25"/>
+                                <TextBlock Text="Khách hàng" VerticalAlignment="Center" Margin="20 10"/>
+                            </StackPanel>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction 
+                                        Command="{Binding MouseEnterButton}"
+                                        CommandParameter="{Binding ElementName=Button7}"
+                                    />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction 
+                                    Command="{Binding MouseLeaveButton}"
+                                    CommandParameter="{Binding ElementName=Button7}"
+                                />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </ListViewItem>
+                    <ListViewItem Padding="0">
+                        <Button x:Name="Button8" Command="{Binding UserWindowCommand}" CommandParameter="{Binding ElementName=mainWindow}" Height="60" Width="200" Background="{x:Null}" BorderBrush="{x:Null}">
+                            <StackPanel  Width="140" Margin="-24 0 0 0" Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AccountGroup" VerticalAlignment="Center" Height="25" Width="25"/>
+                                <TextBlock Text="Người dùng" VerticalAlignment="Center" Margin="20 10"/>
+                            </StackPanel>
+                        </Button>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseEnter">
+                                <i:InvokeCommandAction 
+                                        Command="{Binding MouseEnterButton}"
+                                        CommandParameter="{Binding ElementName=Button8}"
+                                    />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseLeave">
+                                <i:InvokeCommandAction 
+                                    Command="{Binding MouseLeaveButton}"
+                                    CommandParameter="{Binding ElementName=Button8}"
+                                />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                </ListView>
+            </StackPanel>
+        </Grid>
+        <Grid Margin="60 35 0 0" >
+            <!--Background="Aqua"-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition ></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Margin="0 5 0 0" HorizontalAlignment="Center" Width="auto" Orientation="Horizontal">
+                <materialDesign:Card HorizontalAlignment="Right" Margin="5 5 30 5" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Padding="0" Width="235">
+                    <materialDesign:Card.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Green"/>
+                            <GradientStop Color="#FFAEEA00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </materialDesign:Card.Background>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" FontSize="20" FontWeight="Bold" Margin="16 16 16 0" Text="SỐ HÀNG NHẬP"></TextBlock>
+                        <TextBlock Grid.Row="1" Foreground="White" FontSize="20" FontWeight="Bold" Padding="0 0 0 10" Margin="16 0 16 8" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ThongKe.LuongNhap}"></TextBlock>
+                        <Separator Grid.Row="2" Style="{StaticResource MaterialDesignLightSeparator}" />
+                        <TextBlock Grid.Row="3" Margin="16 -30 16 8"  HorizontalAlignment="Left" Text="Tổng tiền:"></TextBlock>
+                        <Grid Grid.Row="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Foreground="Red" FontSize="20" FontWeight="Bold" Margin="16 0 0 8" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ThongKe.GiaNhap, StringFormat='0,0,0'}"></TextBlock>
+                            <TextBlock Grid.Column="1" Foreground="Red" FontSize="20" FontWeight="Bold" Margin="5 0 16 8" VerticalAlignment="Center"  HorizontalAlignment="Left" Text="VNĐ"></TextBlock>
+                        </Grid>
+                        <materialDesign:PopupBox HorizontalAlignment="Right" Padding="2 0 2 0" Margin="15">
+                            <StackPanel>
+                                <!--đưa gì vào đi-->
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </Grid>
+                </materialDesign:Card>
+                <materialDesign:Card HorizontalAlignment="Center" Margin="5 5 30 5" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Padding="0" Width="235">
+                    <materialDesign:Card.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Green"/>
+                            <GradientStop Color="#FFAEEA00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </materialDesign:Card.Background>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" FontSize="20" FontWeight="Bold" Margin="16 16 16 4" Text="SỐ HÀNG ĐÃ BÁN"></TextBlock>
+                        <TextBlock Grid.Row="1" Foreground="White" FontSize="20" FontWeight="Bold" Padding="0 0 0 10" Margin="16 0 16 8" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ThongKe.LuongXuat}"></TextBlock>
+                        <Separator Grid.Row="2" Style="{StaticResource MaterialDesignLightSeparator}" />
+                        <TextBlock Grid.Row="3" Margin="16 -30 16 8"  HorizontalAlignment="Left" Text="Tổng tiền:"></TextBlock>
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Foreground="Red" FontSize="20" FontWeight="Bold" Margin="16 0 0 8" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ThongKe.GiaXuat, StringFormat='0,0,0'}"></TextBlock>
+                            <TextBlock Grid.Column="1" Foreground="Red" FontSize="20" FontWeight="Bold" Margin="5 0 16 8" VerticalAlignment="Center"  HorizontalAlignment="Left" Text="VNĐ"></TextBlock>
+                        </Grid>
+                        <materialDesign:PopupBox HorizontalAlignment="Right" Padding="2 0 2 0" Margin="15">
+                            <StackPanel>
+                                <!--đưa gì vào đi-->
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </Grid>
+                </materialDesign:Card>
+                <materialDesign:Card HorizontalAlignment="Center" Margin="5 5 30 5" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Padding="0" Width="235">
+                    <materialDesign:Card.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Green"/>
+                            <GradientStop Color="#FFAEEA00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </materialDesign:Card.Background>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" FontSize="20" FontWeight="Bold" Margin="10 16 16 4" Text="SỐ HÀNG TỒN KHO"></TextBlock>
+                        <TextBlock Grid.Row="1"  Padding="0 0 0 10" Foreground="White" FontSize="20" FontWeight="Bold" Margin="16 0 16 8" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ThongKe.LuongTon}"></TextBlock>
+                        <Separator Grid.Row="2" Style="{StaticResource MaterialDesignLightSeparator}" />
+                        <materialDesign:PopupBox HorizontalAlignment="Right" Padding="2 0 2 0" Margin="15">
+                            <StackPanel>
+                                <!--đưa gì vào đi-->
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </Grid>
+                </materialDesign:Card>
+                <materialDesign:Card HorizontalAlignment="Right" Margin="5 5 10 5" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" Padding="0" Width="235">
+                    <materialDesign:Card.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Green"/>
+                            <GradientStop Color="#FFAEEA00" Offset="1"/>
+                        </LinearGradientBrush>
+                    </materialDesign:Card.Background>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" FontSize="20" FontWeight="Bold" Margin="16 16 16 4" Text="TIỀN LÃI"></TextBlock>
+
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Foreground="Red" FontSize="20" FontWeight="Bold" Margin="16 0 0 8" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ThongKe.GiaLai, StringFormat='0,0,0'}"></TextBlock>
+                            <TextBlock Grid.Column="1" Foreground="Red" FontSize="20" FontWeight="Bold" Margin="5 0 16 8" VerticalAlignment="Center"  HorizontalAlignment="Left" Text="VNĐ"></TextBlock>
+                        </Grid>
+                        <materialDesign:PopupBox HorizontalAlignment="Right" Padding="2 0 2 0" Margin="15">
+                            <StackPanel>
+                                <!--đưa gì vào đi-->
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                    </Grid>
+                </materialDesign:Card>
+            </StackPanel>
+            <Grid Grid.Row="1" Margin="5 10 5 5">
+                <materialDesign:Card>
+                    <DockPanel Margin="5">
+                        <materialDesign:Card Margin="0 0 5 0" DockPanel.Dock="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <lvc:PieChart Margin="0 0 0 5" x:Name="PieChart1" Series="{Binding PieChartSeriesCollection,UpdateSourceTrigger=PropertyChanged}"  LegendLocation="Bottom" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="200"/>
+                                <StackPanel>
+                                    <lvc:PieChart Margin="0 0 0 5" x:Name="PieChart2" Series="{Binding PieChartSeriesCollectionForSP,UpdateSourceTrigger=PropertyChanged}"  LegendLocation="{Binding Legend}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="200" Height="200">
+                                    </lvc:PieChart>
+                                    <TextBlock Padding="0 0 0 5" Visibility="{Binding VisibilityOfTitle}" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Các sản phẩm"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </materialDesign:Card>
+                        <materialDesign:Card>
+                            <lvc:CartesianChart LegendLocation="Bottom" Margin="5" DockPanel.Dock="Right"  Series="{Binding CartesianChartSeriesCollection}">
+                                <!--<lvc:CartesianChart.Series>
+                                    <lvc:ColumnSeries Values="{Binding CartesianChartSeriesCollection}" ></lvc:ColumnSeries>
+                                </lvc:CartesianChart.Series>-->
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis x:Name="labelDefaultValue" ShowLabels="True" MinValue="0" MaxValue="7"  Labels="{Binding Labels}" FontWeight="Bold" Foreground="#FFAEEA00">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator Step="1" IsEnabled="False"></lvc:Separator>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis MinValue="0" x:Name="AxisY">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator Step="{Binding StepY}" IsEnabled="False"></lvc:Separator>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+
+                            </lvc:CartesianChart>
+                        </materialDesign:Card>
+
+                        <!--<chart:SfChart DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <chart:SfChart.PrimaryAxis>
+                            <chart:CategoryAxis></chart:CategoryAxis>
+                        </chart:SfChart.PrimaryAxis>
+                        <chart:SfChart.SecondaryAxis>
+                            <chart:NumericalAxis></chart:NumericalAxis>
+                        </chart:SfChart.SecondaryAxis>
+                        <chart:ColumnSeries ItemsSource="{Binding DataForChart}" XBindingPath="Year" YBindingPath="Count">
+                        </chart:ColumnSeries>
+                    </chart:SfChart>-->
+                    </DockPanel>
+                </materialDesign:Card>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid Grid.Row="0" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <Grid Width="400">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" 
+                                        Width="100" Margin="20 10 0 0"
+                                        Content="LỌC"
+                                        Command="{Binding FilterCommand}" 
+                                        ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" >
+                                </Button>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <TextBox Text="{Binding Filter}" IsReadOnly="{Binding ReadOnly}" TextWrapping="Wrap" AcceptsReturn="True" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Width="115" Margin="25 5 0 0" VerticalAlignment="Center" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Nhập tên sản phẩm" />
+                            </Grid>
+                            <ComboBox
+                                Grid.Column="2"
+                                Margin="25 19 0 0"
+                                IsEditable="False"
+                                ItemsSource="{Binding ListKindObject}"
+                                SelectedItem="{Binding SelectedKindObject }"
+                                materialDesign:HintAssist.Hint="Sản phẩm">
+                            </ComboBox>
+                        </Grid>
+                        <Grid Margin="5 0 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" 
+                                        Width="100" Margin="25 10 0 0"
+                                        Content="THỐNG KÊ"
+                                        Command="{Binding ThongKeCommand}" 
+                                        CommandParameter="{Binding ElementName=labelDefaultValue}"
+                                        ToolTip="Resource name: MaterialDesignRaisedLightDarkButton" >
+                                </Button>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <ComboBox
+                                    Margin="25 19 0 0"
+                                    IsEditable="False"
+                                    ItemsSource="{Binding ListKindDate}"
+                                    SelectedItem="{Binding SelectedKindDate }"
+                                    materialDesign:HintAssist.Hint="Chọn kiểu thời gian thống kê">
+                                </ComboBox>
+                            </Grid>
+                            <Grid Grid.Column="2">
+                                <DatePicker x:Name="ChartDtp" Width="100" SelectedDateFormat="Short" Margin="25 5 0 0"  SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="Chọn thời gian" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" >
+                                    <DatePicker.BlackoutDates>
+                                        <CalendarDateRange Start="1/1/0001" End="1/1/1800"/>
+                                    </DatePicker.BlackoutDates>
+                                </DatePicker>
+                            </Grid>
+                            <Grid Grid.Column="3" >
+                                <Button  Width="100" HorizontalAlignment="Right" Margin="125 10 0 0" Command="{Binding RefreshCommand}" Background="Green" >
+                                    <DockPanel>
+                                        <materialDesign:PackIcon Kind="TableRefresh" />
+                                        <TextBlock FontSize="10" Text="Làm mới" VerticalAlignment="center"/>
+                                    </DockPanel>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <!--<Grid Grid.Row="3" Margin="5">-->
+            <materialDesign:Card  Grid.Row="3" Margin="5" VerticalAlignment="Stretch">
+                <ScrollViewer VerticalScrollBarVisibility="Disabled">
+                    <!--ListView ItemsSource="{Binding InventoryList, Mode=TwoWay}">
+                            <ListView.View >
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding STT}">
+                                        <GridViewColumnHeader MouseLeftButtonDown="GridViewColumnHeader_MouseLeftButtonDown" HorizontalContentAlignment="Stretch" Content="STT" Width="50" Padding="7"/>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Object.DisplayName}">
+                                        <GridViewColumnHeader Content="Tên sản phẩm" Width="150" HorizontalContentAlignment="Stretch" Padding="7"/>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding CountInput, Mode=TwoWay}">
+                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" Content="Lượng nhập" Width="150" Padding="7"/>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding MoneyInput, Mode=TwoWay}">
+                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" Content="Tiền nhập" Width="150" Padding="7"/>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding CountOutput, Mode=TwoWay}">
+                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" Content="Lượng đã bán" Width="150" Padding="7"/>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding MoneyOutput, Mode=TwoWay}">
+                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" Content="Tiền bán" Width="150" Padding="7"/>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding CountInventory, Mode=TwoWay}">
+                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" Content="Lượng tồn" Width="150" Padding="7"/>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding MoneyEarn, Mode=TwoWay}">
+                                        <GridViewColumnHeader HorizontalContentAlignment="Stretch" Content="Tiền lãi" Width="150" Padding="7"/>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>-->
+
+
+                    <DataGrid ItemsSource="{Binding InventoryList, Mode=TwoWay}" CanUserAddRows="False" AutoGenerateColumns="False" HeadersVisibility="All" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                    Width="60"      
+                                    IsReadOnly="True"
+                                    Binding="{Binding STT}"
+                                    Header="STT"
+                                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                            <DataGridTextColumn
+                                    Width="130"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Object.DisplayName}"
+                                    Header="Tên sản phẩm"
+                                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.Header >
+                                    <TextBlock Text="Ảnh sản phẩm"></TextBlock>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Rectangle x:Name="Avatar" Margin="0 0 0 0" HorizontalAlignment="Center" Height="30" Width="30" >
+                                            <Rectangle.Fill>
+                                                <ImageBrush ImageSource="{Binding Object.Image}"/>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn
+                                    Width="120"
+                                    IsReadOnly="True"
+                                    Binding="{Binding CountInput}"
+                                    Header="Lượng nhập"
+                                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                            <DataGridTextColumn
+                                    Width="150"
+                                    IsReadOnly="True"
+                                    Binding="{Binding MoneyInput, StringFormat='0,0,0 VNĐ'}"
+                                    Header="Tiền nhập"
+                                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                            <DataGridTextColumn
+                                    Width="140"
+                                    IsReadOnly="True"
+                                    Binding="{Binding CountOutput}"
+                                    Header="Lượng bán"
+                                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                            <DataGridTextColumn
+                                    Width="150"
+                                    IsReadOnly="True"
+                                    Binding="{Binding MoneyOutput, StringFormat='0,0,0 VNĐ'}"
+                                    Header="Tiền bán"
+                                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                            <DataGridTextColumn
+                                    Width="140"
+                                    IsReadOnly="True"
+                                    Binding="{Binding CountInventory}"
+                                    Header="Lượng tồn"
+                                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                            <DataGridTextColumn
+                                    Width="100"
+                                    IsReadOnly="True"
+                                    Binding="{Binding MoneyEarn, StringFormat='0,0,0 VNĐ'}"
+                                    Header="Tiền lãi"
+                                    ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                    EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+
+            </materialDesign:Card>
+
+            <!--</Grid>-->
+        </Grid>
+    </Grid>
+</Window>

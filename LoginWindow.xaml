@@ -1,0 +1,159 @@
+﻿<Window x:Class="QLBH.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:QLBH"     
+        mc:Ignorable="d" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:QLBH.UserControlQ"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        DataContext="{StaticResource LoginVM}"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        Name="loginWindow"
+        Title="Đăng nhập" Height="300" Width="400">
+    <Grid>
+        <Grid.Resources>
+            
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <uc:ControlBarUC Tag="{Binding Title,ElementName=loginWindow}"></uc:ControlBarUC>
+        </Grid>
+        <materialDesign:Card Grid.Row="1" Width="300" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="33,35,31.6,35.4">
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="Grid">
+                        <Setter Property="Margin" Value="15 0 15 0"></Setter>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <DockPanel>
+                        <materialDesign:PackIcon Foreground="#FFAEEA00" Kind="User" Margin="0 0 5 0" Width="30" Height="30" VerticalAlignment="Bottom"/>
+                        <TextBox
+                        DockPanel.Dock="Right"
+                        Text="{Binding UserName}"
+                        materialDesign:HintAssist.Hint="Tên đăng nhập"
+                        materialDesign:HintAssist.Foreground="Green"
+                        materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"                       
+                        VerticalAlignment="Center" />
+                    </DockPanel>
+                    
+                </Grid>
+                <Grid Grid.Row="1">
+                    <DockPanel>
+                        <materialDesign:PackIcon Foreground="#FFAEEA00" Kind="Key" Margin="0 0 5 0" Width="30" Height="30" VerticalAlignment="Bottom"/>
+                        <Grid Margin="0" DockPanel.Dock="Right">
+                            <PasswordBox
+                               
+                                Panel.ZIndex="1"
+                                x:Name="FloatingPasswordBox"
+                                materialDesign:HintAssist.Hint="Mật khẩu"
+                                materialDesign:HintAssist.Foreground="Green"
+                                materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                                Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" >
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PasswordChanged">
+                                        <i:InvokeCommandAction 
+                                        Command="{Binding PasswordChangedCommand}"
+                                        CommandParameter="{Binding ElementName=FloatingPasswordBox}"
+                                     />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+
+                            </PasswordBox>
+                            <TextBox 
+                                Text="{Binding PassWord,UpdateSourceTrigger=PropertyChanged}"
+                                x:Name="ShowPasswordTextBox"
+                                Padding="0"
+                                Margin="0"
+                                Visibility="Hidden"
+                                materialDesign:HintAssist.Hint="Mật khẩu"
+                                materialDesign:HintAssist.Foreground="Green"
+                                materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                                VerticalAlignment="Bottom"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Panel.ZIndex="-1"
+                                >
+                            </TextBox>
+                        </Grid>
+                    </DockPanel>
+                    <Grid x:Name="SHPasswordButton" Height="20" Width="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0">
+                        <Button x:Name="ShowPasswordButton" Command="{Binding ShowPasswordCommand}"  VerticalAlignment="Bottom" HorizontalAlignment="Right" Padding="0" Width="20" Height="20" BorderBrush="{x:Null}" Background="{x:Null}" >
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource MultiBindingConverter}">
+                                    <Binding ElementName="FloatingPasswordBox"></Binding>
+                                    <Binding ElementName="ShowPasswordTextBox"></Binding>
+                                    <Binding ElementName="SHPasswordButton"></Binding>
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                            <materialDesign:PackIcon HorizontalAlignment="Center" Foreground="{Binding EyeColor,UpdateSourceTrigger=PropertyChanged}" Kind="EyeOff" VerticalAlignment="Center"/>
+                        </Button>
+                        <Button x:Name="HiddenPasswordButton" Visibility="Hidden" Command="{Binding HiddenPasswordCommand}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Padding="0" Width="20" Height="20" BorderBrush="{x:Null}" Background="{x:Null}" >
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource MultiBindingConverter}">
+                                    <Binding ElementName="FloatingPasswordBox"></Binding>
+                                    <Binding ElementName="ShowPasswordTextBox"></Binding>
+                                    <Binding ElementName="SHPasswordButton"></Binding>
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                            <materialDesign:PackIcon HorizontalAlignment="Center" Foreground="{Binding EyeColor,UpdateSourceTrigger=PropertyChanged}" Kind="Eye" VerticalAlignment="Center"/>
+                        </Button>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="2" Margin="0 2 0 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Button
+                            Padding="0"
+                            IsDefault="True"
+                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                            Width="100"
+                            Background="Blue"
+                            Foreground="White"
+                            ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                            Content="Đăng nhập"
+                            Command="{Binding LoginWindowCommand}"
+                            CommandParameter="{Binding ElementName=loginWindow}"
+                            />
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Button 
+                            Foreground="White"
+                            Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                            Width="100"
+                            Background="Green"
+                            ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+                            Content="Thoát" 
+                            Command="{Binding CloseWindowCommand}"
+                            CommandParameter="{Binding ElementName=loginWindow}"
+                            />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </materialDesign:Card>
+
+    </Grid>
+</Window>
