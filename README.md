@@ -14,4 +14,5 @@ Update thêm một số chi tiết nhỏ
 # [Users]
 ![alt text](https://user-images.githubusercontent.com/55051646/146469442-e8a7e428-8dd0-47ea-82a8-c3e49a29ef70.JPG "Người dùng")
 # [bill]
-![alt text](https://user-images.githubusercontent.com/55051646/146469087-eec8a3d2-0b7e-44e8-8c97-1b4c273d5914.JPG "Hóa đơn")
+![alt text](https://user-images.githubusercontent.com/55051646/146472888-8be00d53-7aa0-461f-83a2-352040a289f6.JPG "Hóa đơn")
+
